@@ -1,0 +1,50 @@
+channel:
+  name: "India's Top 5"
+  niche: "eerie, mysterious, and unexplained Top 5 countdown lists relevant to Indian audiences (haunted places, folklore, unsolved mysteries, urban legends, cursed objects, paranormal reports) — spooky but tasteful, no gore, no real crime victims named"
+  audience: "Indian, mixed Hindi/English speakers, ages 16-35"
+  tone: "suspenseful, dramatic countdown narration, hook-driven, similar in structure to a 'Top 5' horror countdown channel"
+
+script:
+  items_per_video: 5
+  target_narration_seconds: 50
+  language: "hindi"
+
+voice:
+  engine: "edge-tts"
+  voice_name: "hi-IN-MadhurNeural"
+  rate: "+0%"
+  pitch: "-2Hz"
+
+visuals:
+  source: "pixabay"
+  orientation: "portrait"
+  clip_seconds_per_item: 8
+  ken_burns_zoom: true
+
+video:
+  resolution: [1080, 1920]
+  fps: 30
+  background_music: "assets/music/ambient_dark_loop.mp3"
+  music_volume: 0.12
+  captions:
+    enabled: true
+    style: "bold_yellow_bottom"
+    font_size: 64
+
+upload:
+  auto_upload: true
+  privacy_status: "public"
+  schedule_ahead: false
+  category_id: "24"
+  default_tags: ["india", "top5", "mystery", "shorts", "paranormal", "unsolved"]
+  title_template: "{item_count} {topic} That Will Give You Chills 😱 #shorts"
+  description_template: |
+    {hook_line}
+
+    Do you know any stories like this? Drop them in the comments 👇
+
+    #india #top5 #mystery #paranormal #shorts #unsolvedmysteries
+
+posting:
+  max_videos_per_run: 1
+  timezone: "Asia/Kolkata"
