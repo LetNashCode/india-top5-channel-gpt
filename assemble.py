@@ -82,7 +82,7 @@ def _text_clip(text, fontsize, color, stroke_color, stroke_width,
 
 def _build_item_clip(visual_path, audio_path, rank, name, config):
     video_size = tuple(config["video"]["resolution"])
-    audio = AudioFileClip(audio_path)
+    audio = AudioFileClip(audio_path, fps=44100)
     duration = audio.duration + 0.4
 
     if visual_path and os.path.exists(visual_path):
