@@ -32,7 +32,7 @@ def synthesize_script(script: dict, config: dict, workdir: str) -> list:
     os.makedirs(workdir, exist_ok=True)
     paths = []
     for item in script["items"]:
-        out_path = os.path.join(workdir, f"item_{item['rank']}.mp3")
+        out_path = os.path.join(workdir, f"item_{item['rank']}.wav")
         synthesize_narration(item["narration"], config, out_path)
         paths.append(out_path)
     return paths
