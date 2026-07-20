@@ -1,11 +1,11 @@
 channel:
-  name: "India's Top 5"
+  name: "Mystery Storytelling"
   niche: "eerie, mysterious, and unexplained Top 5 countdown lists relevant to Indian audiences (haunted places, folklore, unsolved mysteries, urban legends, cursed objects, paranormal reports) — spooky but tasteful, no gore, no real crime victims named"
   audience: "Indian, mixed Hindi/English speakers, ages 16-35"
   tone: "suspenseful, dramatic countdown narration, hook-driven, similar in structure to a 'Top 5' horror countdown channel"
 
 script:
-  items_per_video: 5
+  items_per_video: 1
   target_narration_seconds: 50
   language: "hindi"
 
@@ -23,7 +23,7 @@ visuals:
 
 video:
   resolution: [1080, 1920]
-  fps: 30
+  fps: 60
   background_music: "assets/music/ambient_dark_loop.mp3"
   music_volume: 0.12
   captions:
