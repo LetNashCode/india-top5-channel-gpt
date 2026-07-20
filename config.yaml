@@ -1,49 +1,57 @@
 channel:
-  name: "Mystery Storytelling"
-  niche: "eerie, mysterious, and unexplained Top 5 countdown lists relevant to Indian audiences (haunted places, folklore, unsolved mysteries, urban legends, cursed objects, paranormal reports) — spooky but tasteful, no gore, no real crime victims named"
-  audience: "Indian, mixed Hindi/English speakers, ages 16-35"
-  tone: "suspenseful, dramatic countdown narration, hook-driven, similar in structure to a 'Top 5' horror countdown channel"
+  name: "Hidden Files India"
+  niche: "Mystery storytelling"
+  audience: "Indian viewers, age 16-40"
+  tone: "Cinematic, suspenseful, emotional storytelling"
 
 script:
   items_per_video: 1
-  target_narration_seconds: 50
+  target_narration_seconds: 40
   language: "hindi"
 
 voice:
   engine: "edge-tts"
   voice_name: "hi-IN-MadhurNeural"
-  rate: "+0%"
+  rate: "-5%"
   pitch: "-2Hz"
 
 visuals:
   source: "pixabay"
   orientation: "portrait"
-  clip_seconds_per_item: 8
+  clip_seconds_per_item: 5
   ken_burns_zoom: true
 
 video:
   resolution: [1080, 1920]
-  fps: 60
+  fps: 30
   background_music: "assets/music/ambient_dark_loop.mp3"
-  music_volume: 0.12
+  music_volume: 0.10
   captions:
     enabled: true
-    style: "bold_yellow_bottom"
-    font_size: 64
+    style: "viral"
+    font_size: 82
 
 upload:
   auto_upload: true
   privacy_status: "public"
   schedule_ahead: false
   category_id: "24"
-  default_tags: ["india", "top5", "mystery", "shorts", "paranormal", "unsolved"]
-  title_template: "{item_count} {topic} That Will Give You Chills 😱 #shorts"
+  default_tags:
+    - mystery
+    - horror
+    - unexplained
+    - india
+    - shorts
+    - facts
+    - storytelling
+
+  title_template: "{topic} 😱"
   description_template: |
     {hook_line}
 
-    Do you know any stories like this? Drop them in the comments 👇
+    Subscribe for more mysteries.
 
-    #india #top5 #mystery #paranormal #shorts #unsolvedmysteries
+    #shorts #mystery #india #horror #facts
 
 posting:
   max_videos_per_run: 1
