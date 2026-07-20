@@ -112,22 +112,47 @@ Return ONLY JSON.
 def generate_script(topic: str, config: dict) -> dict:
     client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
-    items = config["script"]["items_per_video"]
     seconds = config["script"]["target_narration_seconds"]
-    language = config["script"]["language"]
-    niche = config["channel"]["niche"]
-    tone = config["channel"]["tone"]
-    audience = config["channel"]["audience"]
+language = config["script"]["language"]
+niche = config["channel"]["niche"]
+tone = config["channel"]["tone"]
+audience = config["channel"]["audience"]
 
-    user_prompt = f"""Channel niche: {niche}
+    user_prompt = f"""
+Channel Niche: {niche}
+
 Tone: {tone}
-Audience: {audience}
-Language for spoken narration: {language} (write in Devanagari script for correct TTS pronunciation)
-Topic for this video: {topic}
-Number of countdown items: {items}
-Target total narration length: about {seconds} seconds spoken aloud
 
-Write the script now as JSON only."""
+Audience: {audience}
+
+Language: {language}
+
+Video Length: {seconds} seconds
+
+Topic:
+
+{topic}
+
+Create ONE complete storytelling YouTube Short.
+
+It must follow this exact structure:
+
+0-3 seconds:
+HOOK
+
+3-20 seconds:
+STORY
+
+20-35 seconds:
+TWIST
+
+35-45 seconds:
+ENDING
+
+Generate 6-8 scene descriptions with cinematic visuals.
+
+Return ONLY valid JSON.
+"""
 
     response = client.models.generate_content(
         model="gemini-flash-lite-latest",
