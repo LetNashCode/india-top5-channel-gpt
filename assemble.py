@@ -1,4 +1,3 @@
-# assemble.py (Whisper version)
 import os
 import shutil
 
@@ -16,28 +15,47 @@ from moviepy.editor import (
     ColorClip,
     TextClip,
     VideoFileClip,
-    concatenate_videoclips,
     afx,
+    vfx,
 )
 
 FONT = "DejaVu-Sans-Bold"
 
 
-def _fit(c, size):
+def _fit(clip, size):
     w, h = size
-    c = c.resize(height=h) if c.h / c.w < h / w else c.resize(width=w)
-    return c.crop(x_center=c.w / 2, y_center=c.h / 2, width=w, height=h)
+
+    if clip.h / clip.w < h / w:
+        clip = clip.resize(height=h)
+    else:
+        clip = clip.resize(width=w)
+
+    return clip.crop(
+        x_center=clip.w / 2,
+        y_center=clip.h / 2,
+        width=w,
+        height=h,
+    )
 
 
-def _caption(audio_path, size):
-    w, h = size
+def _motion(clip):
+    return clip.fx(
+        vfx.resize,
+        lambda t: 1 + 0.05 * min(t / max(clip.duration, 0.1), 1),
+    )
+
+
+def _captions(audio_path, size):
+    _, h = size
+
     words = transcribe(audio_path)
+
     clips = []
 
-    for item in words:
+    for word in words:
         clips.append(
             TextClip(
-                item["word"].upper(),
+                word["word"].upper(),
                 font=FONT,
                 fontsize=82,
                 color="white",
@@ -45,63 +63,136 @@ def _caption(audio_path, size):
                 stroke_width=4,
             )
             .set_position(("center", h * 0.65))
-            .set_start(item["start"])
-            .set_duration(max(0.05, item["end"] - item["start"]))
+            .set_start(word["start"])
+            .set_duration(max(0.05, word["end"] - word["start"]))
         )
 
     return clips
 
 
 def assemble_video(script, audio_paths, visual_paths, config, out_path):
+
     size = tuple(config["video"]["resolution"])
 
     narration = AudioFileClip(audio_paths[0])
-    total = narration.duration
 
-    seg = total / max(1, len(visual_paths))
-    video_clips = []
+    total_duration = narration.duration
 
-    for i, vp in enumerate(visual_paths):
-        start = i * seg
+    scene_total = sum(
+        scene.get("duration", 1)
+        for scene in script["scene_plan"]
+    )
 
-        if vp and os.path.exists(vp):
-            base = VideoFileClip(vp).without_audio()
-            if base.duration < seg:
-                base = base.loop(duration=seg)
+    scale = total_duration / max(scene_total, 1)
+
+    timeline = []
+
+    current_time = 0
+
+    for scene, scene_clips in zip(script["scene_plan"], visual_paths):
+
+        scene_duration = scene.get("duration", 1) * scale
+
+        if not scene_clips:
+
+            timeline.append(
+                ColorClip(
+                    size,
+                    color=(15, 15, 15),
+                )
+                .set_start(current_time)
+                .set_duration(scene_duration)
+            )
+
+            current_time += scene_duration
+            continue
+
+        clip_duration = scene_duration / len(scene_clips)
+
+        for clip_path in scene_clips:
+
+            if clip_path and os.path.exists(clip_path):
+
+                clip = VideoFileClip(clip_path).without_audio()
+
+                if clip.duration < clip_duration:
+                    clip = clip.loop(duration=clip_duration)
+                else:
+                    clip = clip.subclip(0, clip_duration)
+
+                clip = _fit(clip, size)
+                clip = _motion(clip)
+
             else:
-                base = base.subclip(0, seg)
-            base = _fit(base, size)
-        else:
-            base = ColorClip(size, color=(15, 15, 15)).set_duration(seg)
 
-        base = base.set_start(start).set_duration(seg)
-        video_clips.append(base)
+                clip = ColorClip(
+                    size,
+                    color=(15, 15, 15),
+                ).set_duration(clip_duration)
 
-    captions = _caption(audio_paths[0], size)
+            clip = (
+                clip
+                .set_start(current_time)
+                .set_duration(clip_duration)
+                .crossfadein(0.20)
+                .crossfadeout(0.20)
+            )
+
+            timeline.append(clip)
+
+            current_time += clip_duration
+
+    captions = _captions(
+        audio_paths[0],
+        size,
+    )
 
     final = CompositeVideoClip(
-        video_clips + captions,
-        size=size
-    ).set_duration(total).set_audio(narration)
+        timeline + captions,
+        size=size,
+    ).set_duration(total_duration)
+
+    final = final.set_audio(narration)
 
     music = config["video"].get("background_music")
-    if music and os.path.exists(music):
-        bg = AudioFileClip(music).fx(
-            afx.audio_loop,
-            duration=final.duration
-        ).volumex(0.08)
 
-        final = final.set_audio(
-            CompositeAudioClip([final.audio, bg])
+    if music and os.path.exists(music):
+
+        bg = (
+            AudioFileClip(music)
+            .fx(
+                afx.audio_loop,
+                duration=final.duration,
+            )
+            .volumex(
+                config["video"].get(
+                    "music_volume",
+                    0.08,
+                )
+            )
         )
 
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        final = final.set_audio(
+            CompositeAudioClip(
+                [
+                    final.audio,
+                    bg,
+                ]
+            )
+        )
+
+    os.makedirs(
+        os.path.dirname(out_path),
+        exist_ok=True,
+    )
 
     final.write_videofile(
         out_path,
-        fps=30,
+        fps=config["video"].get("fps", 30),
         codec="libx264",
         audio_codec="aac",
         preset="medium",
         threads=4,
     )
+
+    return out_path
