@@ -35,6 +35,13 @@ def synthesize_narration(text, config, out_path):
     temp = []
 
     for i, chunk in enumerate(split_text(text)):
+        import re
+        
+        chunk = re.sub(r"\.{2,}", ".", chunk)
+        chunk = chunk.replace("...", ".")
+        chunk = chunk.replace("..", ".")
+        chunk = chunk.strip()
+        
         tts.New(chunk)
         part = f"tts_part_{i}.mp3"
         shutil.move("output.mp3", part)
