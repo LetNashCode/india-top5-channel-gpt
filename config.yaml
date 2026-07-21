@@ -1,58 +1,37 @@
 channel:
-  name: "Hidden Files India"
-  niche: "Viral Storytelling"
-  audience: "Indian viewers, age 16-40"
-  tone: "Curiosity-driven, cinematic, emotional"
+  niche: "Curiosity, Mystery, Science, History"
+  tone: "Cinematic, suspenseful, fast-paced"
+  audience: "Global"
 
 script:
-  items_per_video: 1
-  target_narration_seconds: 40
-  language: "hindi"
+  language: "English"
+  target_narration_seconds: 45
 
 voice:
-  engine: "edge-tts"
-  voice_name: "en-IN-NeerjaNeural"
-  rate: "-5%"
-  pitch: "-2Hz"
+  provider: "tiktok"
+  voice_name: "en_female_ht_f08_wonderful_world"
 
 visuals:
-  source: "pixabay"
+  provider: "pixabay"
   orientation: "portrait"
-  clip_seconds_per_item: 5
-  ken_burns_zoom: true
 
 video:
   resolution: [1080, 1920]
   fps: 30
-  background_music: "assets/music/ambient_dark_loop.mp3"
-  music_volume: 0.10
+  background_music: "assets/music/background.mp3"
+  music_volume: 0.08
   captions:
-    enabled: true
-    style: "viral"
-    font_size: 82
+    font_size: 72
 
 upload:
   auto_upload: true
   privacy_status: "public"
-  schedule_ahead: false
-  category_id: "24"
+  category_id: "27"
+  title_template: "{topic}"
+  description_template: "{hook_line}"
   default_tags:
-    - mystery
-    - horror
-    - unexplained
-    - india
     - shorts
     - facts
-    - storytelling
-
-  title_template: "{topic} 😱"
-  description_template: |
-    {hook_line}
-
-    Subscribe for more mysteries.
-
-    #shorts #mystery #india #horror #facts
-
-posting:
-  max_videos_per_run: 1
-  timezone: "Asia/Kolkata"
+    - mystery
+    - science
+    - history
