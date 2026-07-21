@@ -1,91 +1,52 @@
 """
 visuals.py
-Story-based visual fetcher
+Multi-shot visual fetcher (Pixabay-ready)
 """
-
-import os
-import random
-import re
-import requests
-
-PIXABAY_SEARCH_URL = "https://pixabay.com/api/videos/"
-
-
+import os,re,requests
+PIXABAY_SEARCH_URL="https://pixabay.com/api/videos/"
+_used_urls=set()
 def _clean(text):
-    text = text.lower()
-    text = re.sub(r"[^a-z0-9\s]", " ", text)
-    words = [w for w in text.split() if len(w) > 2]
-    return " ".join(words[:4])
-
-
-def _queries(scene):
-    queries = []
-
-    for k in scene.get("keywords", []):
-        q = _clean(k)
-        if q and q not in queries:
-            queries.append(q)
-
-    visual = _clean(scene.get("visual", ""))
-    if visual and visual not in queries:
-        queries.insert(0, visual)
-
-    return queries
-
-
-def _find_video(scene):
-    for query in _queries(scene):
-        r = requests.get(
-            PIXABAY_SEARCH_URL,
-            params={
-                "key": os.environ["PIXABAY_API_KEY"],
-                "q": query,
-                "video_type": "film",
-                "per_page": 10,
-            },
-            timeout=20,
-        )
-
-        if r.status_code != 200:
-            continue
-
-        hits = r.json().get("hits", [])
-        if not hits:
-            continue
-
-        hit = random.choice(hits)
-        videos = hit["videos"]
-
-        for tier in ("large", "medium", "small", "tiny"):
-            if tier in videos:
-                return videos[tier]["url"]
-
+    text=re.sub(r"[^a-zA-Z0-9\s]"," ",text.lower())
+    return " ".join([w for w in text.split() if len(w)>2])
+def _score(hit):
+    s=0
+    v=hit.get("videos",{})
+    if "large" in v:s+=40
+    elif "medium" in v:s+=30
+    elif "small" in v:s+=20
+    s+=min(hit.get("views",0)/1000,30)
+    s+=min(hit.get("downloads",0)/1000,30)
+    return s
+def _search(query):
+    r=requests.get(PIXABAY_SEARCH_URL,params={"key":os.environ["PIXABAY_API_KEY"],"q":_clean(query),"video_type":"film","per_page":15},timeout=30)
+    if r.status_code!=200:return None
+    hits=r.json().get("hits",[])
+    hits.sort(key=_score,reverse=True)
+    for hit in hits:
+        vids=hit.get("videos",{})
+        for tier in ("large","medium","small","tiny"):
+            if tier in vids:
+                url=vids[tier]["url"]
+                if url in _used_urls:continue
+                _used_urls.add(url)
+                return url
     return None
-
-
-def _download(url, out_path):
-    r = requests.get(url, stream=True, timeout=60)
-    r.raise_for_status()
-
-    with open(out_path, "wb") as f:
-        for chunk in r.iter_content(1024 * 1024):
-            f.write(chunk)
-
-
-def fetch_visuals_for_script(script, config, workdir):
-    os.makedirs(workdir, exist_ok=True)
-
-    paths = []
-
-    for i, scene in enumerate(script["scene_plan"], start=1):
-        url = _find_video(scene)
-
-        if not url:
-            paths.append(None)
-            continue
-
-        out = os.path.join(workdir, f"scene_{i}.mp4")
-        _download(url, out)
-        paths.append(out)
-
+def _download(url,path):
+    r=requests.get(url,stream=True,timeout=60);r.raise_for_status()
+    with open(path,"wb") as f:
+        for c in r.iter_content(1024*1024):
+            if c:f.write(c)
+def fetch_visuals_for_script(script,config,workdir):
+    os.makedirs(workdir,exist_ok=True)
+    paths=[];clip_no=1
+    for scene in script["scene_plan"]:
+        scene_paths=[]
+        for shot in scene.get("shots",[]):
+            url=_search(shot["search"])
+            if not url:continue
+            out=os.path.join(workdir,f"clip_{clip_no}.mp4")
+            _download(url,out)
+            scene_paths.append(out);clip_no+=1
+        if scene_paths:paths.extend(scene_paths)
+        else:paths.append(None)
     return paths
