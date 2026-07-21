@@ -11,7 +11,7 @@ script:
 
 voice:
   engine: "edge-tts"
-  voice_name: "hi-IN-MadhurNeural"
+  voice_name: "en-IN-PrabhatNeural"
   rate: "-5%"
   pitch: "-2Hz"
 
