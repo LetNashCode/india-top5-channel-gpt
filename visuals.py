@@ -42,7 +42,6 @@ def _score(width, height, duration):
 
 def _pixabay(query):
     try:
-
         r = requests.get(
             PIXABAY_SEARCH_URL,
             params={
@@ -70,12 +69,14 @@ def _pixabay(query):
 
                 v = videos[tier]
 
-                candidates.append({
-                    "url": v["url"],
-                    "width": v.get("width", 0),
-                    "height": v.get("height", 0),
-                    "duration": hit.get("duration", 0),
-                })
+                candidates.append(
+                    {
+                        "url": v["url"],
+                        "width": v.get("width", 0),
+                        "height": v.get("height", 0),
+                        "duration": hit.get("duration", 0),
+                    }
+                )
 
                 break
 
@@ -112,14 +113,19 @@ def _pexels(query):
             if not files:
                 continue
 
-            best = max(files, key=lambda x: x.get("width", 0))
+            best = max(
+                files,
+                key=lambda x: x.get("width", 0),
+            )
 
-            candidates.append({
-                "url": best["link"],
-                "width": best.get("width", 0),
-                "height": best.get("height", 0),
-                "duration": video.get("duration", 0),
-            })
+            candidates.append(
+                {
+                    "url": best["link"],
+                    "width": best.get("width", 0),
+                    "height": best.get("height", 0),
+                    "duration": video.get("duration", 0),
+                }
+            )
 
         return candidates
 
@@ -157,7 +163,12 @@ def _search(query):
 
 def _download(url, path):
 
-    r = requests.get(url, stream=True, timeout=60)
+    r = requests.get(
+        url,
+        stream=True,
+        timeout=60,
+    )
+
     r.raise_for_status()
 
     with open(path, "wb") as f:
@@ -180,7 +191,19 @@ def fetch_visuals_for_script(script, config, workdir):
 
         for shot in scene.get("shots", []):
 
-            url = _search(shot["search"])
+            url = None
+
+            queries = shot.get("searches")
+
+            if not queries:
+                queries = [shot["search"]]
+
+            for query in queries:
+
+                url = _search(query)
+
+                if url:
+                    break
 
             if not url:
                 continue
