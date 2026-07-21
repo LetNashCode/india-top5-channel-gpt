@@ -44,6 +44,20 @@ Rules:
 - Every sentence must increase curiosity.
 - Create 6-8 scenes.
 - Each scene needs cinematic visual keywords.
+
+Generate an SEO optimized YouTube Shorts title under 70 characters.
+
+Generate an SEO optimized YouTube description under 500 characters.
+
+Generate exactly 15 tags.
+
+Rules for tags:
+- lowercase only
+- no hashtags
+- no duplicates
+- specific to the topic
+- mix broad and niche keywords
+- maximize YouTube search discoverability
 """
 
 def generate_script(topic:str, config:dict)->dict:
