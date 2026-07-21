@@ -1,5 +1,7 @@
 from tiktoktts import TTS
 
-print(TTS.GetAllVoices())
+tts = TTS()
+
+print(tts.GetAllVoices())
 
 raise SystemExit
