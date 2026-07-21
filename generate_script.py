@@ -22,13 +22,30 @@ Schema:
   "story":"",
   "twist":"",
   "ending":"",
-  "scene_plan":[
-   {
-     "text":"",
-     "visual":"",
-     "keywords":[]
-   }
- ]
+  "scene_plan": [
+    {
+      "text": "...",
+      "duration": 4,
+      "shots": [
+  {
+    "type": "wide",
+    "search": ""
+  },
+  {
+    "type": "medium",
+    "search": ""
+  },
+  {
+    "type": "closeup",
+    "search": ""
+  },
+  {
+    "type": "detail",
+    "search": ""
+  }
+]
+    }
+  ]
 }
 
 Rules:
@@ -58,6 +75,27 @@ Rules for tags:
 - specific to the topic
 - mix broad and niche keywords
 - maximize YouTube search discoverability
+For every scene, generate exactly 4 unique stock footage searches.
+
+Each search must be:
+- highly specific
+- cinematic
+- searchable on Pixabay and Pexels
+- different from the others
+- directly related to the narration
+
+Avoid generic searches like:
+- nature
+- city
+- people
+- building
+
+Prefer searches like:
+- abandoned soviet bunker cinematic
+- underwater shipwreck close up
+- radio telescope at night
+- scientist operating vintage computer
+- medieval castle drone aerial
 """
 
 def generate_script(topic:str, config:dict)->dict:
