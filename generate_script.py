@@ -80,25 +80,13 @@ Story Structure
 - Hook (0-3s)
 - Story (3-20s)
 - Twist (20-35s)
-- Ending with an open loop (35-45s)
-
-Allowed emotions
-
-- curiosity
-- suspense
-- mystery
-- fear
-- shock
-- excitement
-- wonder
-- urgency
-- sadness
-- hope
+- Reveal What are we talking about (35-45s)
+- Ending with an open loop (45-50s)
 
 Rules
 
 - English only.
-- 40-45 seconds.
+- 40-50 seconds.
 - Never start with dates.
 - Never start with names.
 - Never sound like Wikipedia.
@@ -135,21 +123,21 @@ Hook Inspiration
 
 Use the style of proven viral hooks such as:
 
-- Scientists still can't explain this...
-- This wasn't supposed to be recorded...
-- Nobody expected what happened next...
-- Everything changed when...
-- You were never supposed to see this...
-- This mystery remains unsolved...
-- The strangest part comes later...
-- Something about this doesn't make sense...
-- This discovery shocked everyone...
-- The government never explained this...
-- People still argue about this...
-- This should be impossible...
-- What happened next shocked everyone...
-- This changes everything we thought we knew...
-- Nobody saw this coming...
+- Scientists still can't explain this.
+- This wasn't supposed to be recorded.
+- Nobody expected what happened next.
+- Everything changed when.
+- You were never supposed to see this.
+- This mystery remains unsolved.
+- The strangest part comes later.
+- Something about this doesn't make sense.
+- This discovery shocked everyone.
+- The government never explained this.
+- People still argue about this.
+- This should be impossible.
+- What happened next shocked everyone.
+- This changes everything we thought we knew.
+- Nobody saw this coming.
 
 Do NOT copy these hooks word-for-word.
 
@@ -186,9 +174,9 @@ Rules for tags:
 - mix broad and niche keywords
 - maximize YouTube search discoverability
 
-For every scene generate exactly 4 shots.
+For every scene generate exactly 2 shots.
 
-Each shot must contain exactly 5 alternative search queries.
+Each shot must contain exactly 4 alternative search queries.
 
 The search queries should describe the SAME shot from different perspectives.
 
@@ -240,7 +228,6 @@ Writing Style
 
 - Vary sentence length.
 - Mix very short sentences with longer ones.
-- Use pauses (...) only when they improve suspense.
 - Every scene should feel more intense than the previous one.
 - Every sentence should make viewers ask "What happens next?"
 - Never completely satisfy curiosity until the ending.
@@ -268,7 +255,7 @@ Avoid repetition
 
 Ending Rules
 
-- Never fully conclude the story.
+- Conclude the story.
 - End with another mystery, question or revelation.
 - End with a question, mystery or surprising implication.
 - The viewer should feel compelled to immediately watch another related Short.
