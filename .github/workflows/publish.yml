@@ -2,13 +2,20 @@ name: Publish Short
 
 on:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: "0 2 * * *"      # 07:30 IST
+    - cron: "30 4 * * *"     # 10:00 IST
+    - cron: "30 7 * * *"     # 13:00 IST
+    - cron: "30 10 * * *"    # 16:00 IST
+    - cron: "30 13 * * *"    # 19:00 IST
+    - cron: "30 15 * * *"    # 21:00 IST
+
   workflow_dispatch: {}
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
     steps:
       - uses: actions/checkout@v4
 
@@ -41,6 +48,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
         run: python main.py
 
