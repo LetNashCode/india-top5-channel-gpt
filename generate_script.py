@@ -110,7 +110,7 @@ Rules
 - Every sentence must create another unanswered question.
 - Every 5-7 seconds introduce a new twist.
 - Use short punchy sentences.
-- Use natural pauses (...) where they improve delivery.
+- Use commas, periods and sentence structure to create natural pauses.
 - Do not overuse punctuation.
 - Build curiosity continuously.
 - End with a cliffhanger or open loop.
