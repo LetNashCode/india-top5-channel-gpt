@@ -19,7 +19,7 @@ from moviepy.editor import (
     vfx,
 )
 
-FONT = "DejaVu-Sans-Bold"
+FONT = "Montserrat-Black"
 
 
 def _fit(clip, size):
