@@ -45,8 +45,35 @@ jobs:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
-        run: python main.py
+        run: |
+          echo "=========================================="
+          echo "🚀 AI YouTube Shorts Pipeline Started"
+          echo "=========================================="
+          echo "Start Time: $(date)"
+          echo "Runner: $(uname -a)"
+          echo "Python Version:"
+          python --version
+          echo "Memory:"
+          free -h
+          echo "Disk:"
+          df -h
+          echo "=========================================="
 
+          set +e
+
+          python -u main.py
+
+          EXIT_CODE=$?
+
+          echo "=========================================="
+          echo "Pipeline Finished"
+          echo "End Time: $(date)"
+          echo "Exit Code: $EXIT_CODE"
+          echo "=========================================="
+
+          exit $EXIT_CODE
+
+          
       - name: Commit updated used_topics.json
         run: |
           git config user.name "auto-publish-bot"
