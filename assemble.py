@@ -1,4 +1,5 @@
 import os
+import random
 import shutil
 
 from whisper_align import transcribe
@@ -13,36 +14,13 @@ from moviepy.editor import (
     CompositeAudioClip,
     CompositeVideoClip,
     ColorClip,
+    ImageClip,
     TextClip,
-    VideoFileClip,
     afx,
     vfx,
 )
 
 FONT = "DejaVu-Sans-Bold"
-
-
-def _fit(clip, size):
-    w, h = size
-
-    if clip.h / clip.w < h / w:
-        clip = clip.resize(height=h)
-    else:
-        clip = clip.resize(width=w)
-
-    return clip.crop(
-        x_center=clip.w / 2,
-        y_center=clip.h / 2,
-        width=w,
-        height=h,
-    )
-
-
-def _motion(clip):
-    return clip.fx(
-        vfx.resize,
-        lambda t: 1 + 0.05 * min(t / max(clip.duration, 0.1), 1),
-    )
 
 
 def _captions(audio_path, size):
@@ -70,7 +48,62 @@ def _captions(audio_path, size):
     return clips
 
 
-def assemble_video(script, audio_paths, visual_paths, config, out_path):
+def _animate(clip):
+
+    mode = random.choice([
+        "zoom_in",
+        "zoom_out",
+        "left",
+        "right",
+        "up",
+        "down",
+    ])
+
+    if mode == "zoom_in":
+        return clip.fx(
+            vfx.resize,
+            lambda t: 1 + 0.08 * t / max(clip.duration, 0.1),
+        )
+
+    if mode == "zoom_out":
+        return clip.fx(
+            vfx.resize,
+            lambda t: 1.08 - 0.08 * t / max(clip.duration, 0.1),
+        )
+
+    if mode == "left":
+        return clip.set_position(
+            lambda t: (
+                -40 * t / max(clip.duration, 0.1),
+                "center",
+            )
+        )
+
+    if mode == "right":
+        return clip.set_position(
+            lambda t: (
+                40 * t / max(clip.duration, 0.1),
+                "center",
+            )
+        )
+
+    if mode == "up":
+        return clip.set_position(
+            lambda t: (
+                "center",
+                -40 * t / max(clip.duration, 0.1),
+            )
+        )
+
+    return clip.set_position(
+        lambda t: (
+            "center",
+            40 * t / max(clip.duration, 0.1),
+        )
+    )
+
+
+def assemble_video(script, audio_paths, image_paths, config, out_path):
 
     size = tuple(config["video"]["resolution"])
 
@@ -78,67 +111,55 @@ def assemble_video(script, audio_paths, visual_paths, config, out_path):
 
     total_duration = narration.duration
 
-    scene_total = sum(
+    total_scene_time = sum(
         scene.get("duration", 1)
         for scene in script["scene_plan"]
     )
 
-    scale = total_duration / max(scene_total, 1)
+    scale = total_duration / max(total_scene_time, 1)
 
     timeline = []
 
-    current_time = 0
+    current = 0
 
-    for scene, scene_clips in zip(script["scene_plan"], visual_paths):
+    for scene, image in zip(script["scene_plan"], image_paths):
 
-        scene_duration = scene.get("duration", 1) * scale
+        duration = scene.get("duration", 1) * scale
 
-        if not scene_clips:
+        if image and os.path.exists(image):
 
-            timeline.append(
-                ColorClip(
-                    size,
-                    color=(15, 15, 15),
-                )
-                .set_start(current_time)
-                .set_duration(scene_duration)
+            clip = ImageClip(image).resize(height=size[1])
+
+            if clip.w < size[0]:
+                clip = clip.resize(width=size[0])
+
+            clip = clip.crop(
+                x_center=clip.w / 2,
+                y_center=clip.h / 2,
+                width=size[0],
+                height=size[1],
             )
 
-            current_time += scene_duration
-            continue
+            clip = _animate(clip)
 
-        clip_duration = scene_duration / len(scene_clips)
+        else:
 
-        for clip_path in scene_clips:
-
-            if clip_path and os.path.exists(clip_path):
-
-                clip = VideoFileClip(clip_path).without_audio()
-
-                if clip.duration < clip_duration:
-                    clip = clip.loop(duration=clip_duration)
-                else:
-                    clip = clip.subclip(0, clip_duration)
-
-                clip = _fit(clip, size)
-                clip = _motion(clip)
-
-            else:
-
-                clip = ColorClip(
-                    size,
-                    color=(15, 15, 15),
-                ).set_duration(clip_duration)
-
-            clip = (
-                clip
-                .set_start(current_time)
-                .set_duration(clip_duration)                
+            clip = ColorClip(
+                size,
+                color=(20, 20, 20),
             )
 
-            timeline.append(clip)
+        clip = (
+            clip
+            .set_start(current)
+            .set_duration(duration)
+            .crossfadein(0.25)
+            .crossfadeout(0.25)
+        )
 
-            current_time += clip_duration
+        timeline.append(clip)
+
+        current += duration
 
     captions = _captions(
         audio_paths[0],
