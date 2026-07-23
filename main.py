@@ -33,28 +33,49 @@ def build_title_description(script):
 
 
 def run(dry_run=False):
+
     config = load_config()
 
-    topic = get_next_topic()
-    print("Topic:", topic)
+    idea = get_next_topic()
+    print("Idea:", idea)
 
-    script = generate_script(topic, config)
+    script = generate_script(
+        idea,
+        config,
+    )
 
     run_id = str(int(time.time()))
-    workdir = os.path.join("output", run_id)
+    workdir = os.path.join(
+        "output",
+        run_id,
+    )
 
-    os.makedirs(workdir, exist_ok=True)
+    os.makedirs(
+        workdir,
+        exist_ok=True,
+    )
 
-    audio = synthesize_script(script, config, os.path.join(workdir, "audio"))
+    audio = synthesize_script(
+        script,
+        config,
+        os.path.join(
+            workdir,
+            "audio",
+        ),
+    )
+
     print("Generating Whisper timestamps...")
-    
+
     print("=" * 80)
     print("🎨 Generating AI Images...")
     print("=" * 80)
 
     visuals = generate_images(
         script,
-        os.path.join(workdir, "visuals"),
+        os.path.join(
+            workdir,
+            "visuals",
+        ),
     )
 
     print("=" * 80)
@@ -63,10 +84,16 @@ def run(dry_run=False):
 
     music = download_music(
         script,
-        os.path.join(workdir, "music"),
+        os.path.join(
+            workdir,
+            "music",
+        ),
     )
 
-    final_video = os.path.join(workdir, "final.mp4")
+    final_video = os.path.join(
+        workdir,
+        "final.mp4",
+    )
 
     assemble_video(
         script,
@@ -92,8 +119,13 @@ def run(dry_run=False):
 
 
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+    )
+
     args = parser.parse_args()
 
     run(args.dry_run)
