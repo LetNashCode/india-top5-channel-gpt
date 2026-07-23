@@ -40,7 +40,13 @@ def generate_images(script, workdir):
 
     for i, scene in enumerate(script["scene_plan"], start=1):
 
-        prompt = STYLE_PREFIX + scene["image_prompt"]
+        prompt = (
+            STYLE_PREFIX
+            + scene["image_prompt"]
+            + ". Full body if needed. Portrait framing. Subject centered. "
+              "Designed specifically for a vertical smartphone screen. "
+              "No wide landscape composition."
+        )
 
         url = (
             BASE_URL
@@ -48,9 +54,8 @@ def generate_images(script, workdir):
             + "?width=1080"
             + "&height=1920"
             + "&model=flux"
-            + "&seed=" + str(i)
-            + "&enhance=true"
             + "&nologo=true"
+            + "&enhance=true"
         )
 
         print("=" * 80)
