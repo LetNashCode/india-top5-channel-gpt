@@ -137,6 +137,8 @@ Never use ellipses (...).
 
 Use commas and short sentences to create pauses.
 
+Do not repeat any sentance.
+
 Never write the words "dot dot dot".
 
 Every transformation must have realistic consequences.
