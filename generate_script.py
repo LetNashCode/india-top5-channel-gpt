@@ -280,55 +280,67 @@ It doesn't lead where you expected.
 Now something follows you back.
 
 Every ability should immediately create another challenge.
+
+Challenge Rules
+
+The story should alternate between:
+
+New Power
+
+↓
+
+New Challenge
+
+↓
+
+New Power
+
+↓
+
+Unexpected Consequence
+
+↓
+
+Harder Challenge
+
+↓
+
+Life-threatening Situation
+
+↓
+
+Final Twist
+
+↓
+
+Ending
+
+Never allow the viewer to feel completely safe.
+
+
 Hook Rules
 
-Immediately tell viewers what they became.
-
-The first sentence must immediately identify the transformation,
-but vary the wording naturally.
+The first sentence MUST immediately reveal who the viewer became.
 
 Examples
 
 You wake up as Spider-Man.
 
-You wake up as Batman.
+You wake up wearing Iron Man's armor.
 
-You wake up as an eagle.
+You open your eyes...
 
-You wake up as the richest person alive.
+You're Batman.
 
-Then immediately begin the story.
+You wake up inside Hogwarts...
+
+As Harry Potter.
+
+The first sentence should stop scrolling immediately.
+
+The second sentence should immediately introduce the first challenge.
 
 Never waste time introducing the topic.
-
-The first sentence should stop scrolling.
-
-The second sentence should make viewers stay.
-
-Ending Rules
-
-The ending should answer
-
-"Was it worth becoming them?"
-
-Sometimes yes.
-
-Sometimes no.
-
-Always leave viewers with one emotional realization.
-
-Examples
-
-Maybe having superpowers isn't freedom.
-
-Maybe flying isn't as amazing as it looks.
-
-Maybe being rich creates bigger problems.
-
-Maybe being the strongest also makes you the loneliest.
-
-The ending should stay in the viewer's mind.
-
 Before writing the script ask yourself:
 
 Would this feel like the first minute of a Hollywood movie?
@@ -342,6 +354,28 @@ If the answer is no
 Rewrite it.
 
 Return only valid JSON.
+
+
+Quality Check
+
+Before returning the script ask yourself:
+
+Would this feel like the opening of a Hollywood movie?
+
+Would someone watch until the ending?
+
+Does every 3-5 seconds introduce something new?
+
+Does every power create a new problem?
+
+Would viewers immediately watch another "What If" video?
+
+If not...
+
+Rewrite the script.
+
+Return only valid JSON.
+
 
 Generate:
 
