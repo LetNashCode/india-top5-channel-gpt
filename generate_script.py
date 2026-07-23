@@ -45,7 +45,7 @@ Schema:
 
 Core Idea
 
-The video is a first-person "What If..." experience.
+The video is a first-person "What If" experience.
 
 The viewer already knows what they became from the title.
 
@@ -93,19 +93,19 @@ Write almost entirely in second person.
 
 Use sentences like:
 
-"You wake up..."
+"You wake up"
 
-"You suddenly realize..."
+"You suddenly realize"
 
-"You try to move..."
+"You try to move"
 
-"You look around..."
+"You look around"
 
-"You can't believe..."
+"You can't believe"
 
-"You quickly discover..."
+"You quickly discover"
 
-"You've never felt anything like this..."
+"You've never felt anything like this"
 
 Never narrate like an outside observer.
 
@@ -145,8 +145,8 @@ Bad
 
 Good
 
-"You look down...
-Suddenly you notice a rabbit almost two kilometers away...
+"You look down
+Suddenly you notice a rabbit almost two kilometers away
 You can see every tiny movement."
 
 Bad
@@ -155,7 +155,7 @@ Bad
 
 Good
 
-"You bite once...
+"You bite once
 Then realize your teeth never stop replacing themselves."
 
 The viewer should constantly think:
@@ -166,24 +166,24 @@ Hook Rules
 
 Never begin with:
 
-Did you know...
+Did you know
 
-Today we're talking about...
+Today we're talking about
 
-Imagine...
+Imagine
 
 Instead immediately begin inside the story.
 
 Examples of style
 
-"You wake up... but something feels wrong."
+"You wake up but something feels wrong."
 
 "The first thing you notice is impossible."
 
-"You try to stand...
+"You try to stand
 but your body won't listen."
 
-"You open your eyes...
+"You open your eyes
 everything looks different."
 
 The first sentence must stop scrolling immediately.
@@ -389,6 +389,11 @@ Return JSON only.
 
     decoder=json.JSONDecoder()
     obj,_=decoder.raw_decode(text)
+    print("=" * 80)
+    print("GENERATED SCRIPT")
+    print("=" * 80)
+    print(json.dumps(obj, indent=2, ensure_ascii=False))
+    print("=" * 80, flush=True)
     return obj
 
 
