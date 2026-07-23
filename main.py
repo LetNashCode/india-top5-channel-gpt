@@ -12,6 +12,7 @@ from generate_script import generate_script
 from tts import synthesize_script
 from generate_images import generate_images
 from music import download_music
+from sfx import download_sfx
 from assemble import assemble_video
 from upload_youtube import upload_video
 
@@ -90,6 +91,18 @@ def run(dry_run=False):
         ),
     )
 
+    print("=" * 80)
+    print("💥 Downloading Sound Effects...")
+    print("=" * 80)
+
+    sfx = download_sfx(
+        script,
+        os.path.join(
+            workdir,
+            "sfx",
+        ),
+    )
+
     final_video = os.path.join(
         workdir,
         "final.mp4",
@@ -100,6 +113,7 @@ def run(dry_run=False):
         audio,
         visuals,
         music,
+        sfx,
         config,
         final_video,
     )
