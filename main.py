@@ -10,7 +10,7 @@ import yaml
 from topics import get_next_topic
 from generate_script import generate_script
 from tts import synthesize_script
-from visuals import fetch_visuals_for_script
+from generate_images import generate_images
 from assemble import assemble_video
 from upload_youtube import upload_video
 
@@ -47,9 +47,12 @@ def run(dry_run=False):
     audio = synthesize_script(script, config, os.path.join(workdir, "audio"))
     print("Generating Whisper timestamps...")
     
-    visuals = fetch_visuals_for_script(
+    print("=" * 80)
+    print("🎨 Generating AI Images...")
+    print("=" * 80)
+
+    visuals = generate_images(
         script,
-        config,
         os.path.join(workdir, "visuals"),
     )
 
