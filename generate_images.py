@@ -29,12 +29,20 @@ def generate_images(script, workdir):
 
         prompt = STYLE_PREFIX + scene["visual_prompt"]
 
-        url = BASE_URL + urllib.parse.quote(prompt)
+        url = (
+            BASE_URL
+            + urllib.parse.quote(prompt)
+            + "?width=1080"
+            + "&height=1920"
+            + "&model=flux"
+        )
 
-        print(f"Generating image {i+1}/{len(script['scene_plan'])}")
+        print("=" * 80)
+        print(f"🖼️ Generating Scene {i + 1}/{len(script['scene_plan'])}")
         print(prompt)
+        print("=" * 80, flush=True)
 
-        response = requests.get(url, timeout=180)
+        response = requests.get(url, timeout=300)
 
         response.raise_for_status()
 
